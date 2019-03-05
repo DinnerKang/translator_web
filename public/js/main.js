@@ -5,7 +5,6 @@ var korean = [];
 var english = [];
 var time_table = [];
 
-var cutWords = ['퇴직'];
 
 function writeUserData() {
     return new Promise(function (resolve, reject) {
@@ -16,7 +15,6 @@ function writeUserData() {
                 console.log(snapshot.val());
                 var data = snapshot.val();
                 var len = document.getElementById("data_length");
-                var top10 = document.getElementById("top10_list");
                 var _values = Object.values(data);
 
                 data_length = Object.keys(data).length;
@@ -31,11 +29,7 @@ function writeUserData() {
                 korean = makeResult(korean.reduce(reducer, []));
                 english = makeResult(english.reduce(reducer, {}));
                 console.log(korean);
-                /*
-                var top_sorting = korean.sort(function (a, b) {
-                    return b.freq < a.freq ? -1 : b.freq > a.freq ? 1 : 0;
-                }).slice(0, 50);
-                console.log(top_sorting);*/
+                
                 resolve(korean);
             });
     });
@@ -59,6 +53,8 @@ function makeResult(obj) {
 
     return arr;
 }
+
+//비속어 제거용 준비
 function array_diff(a, b) {
     var tmp={}, res=[];
     for(var i=0;i<a.length;i++) tmp[a[i]]=1;
