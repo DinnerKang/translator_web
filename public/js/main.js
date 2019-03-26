@@ -6,6 +6,9 @@ var english = [];
 var time_table = [];
 
 
+// 차트 준비
+// 데이터 변환 준비
+
 function writeUserData() {
     return new Promise(function (resolve, reject) {
         firebase
