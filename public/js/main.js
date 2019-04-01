@@ -1,9 +1,10 @@
 var database = firebase.database();
 
 var data_length;
-var korean = [];
-var english = [];
-var time_table = [];
+var Source = [];
+var Original = [];
+var Translation = [];
+var Time = [];
 
 
 function writeUserData() {
@@ -13,24 +14,27 @@ function writeUserData() {
             .ref("translate/success")
             .on("value", function (snapshot) {
                 console.log(snapshot.val());
+                console.log('개수 : ', Object.keys(snapshot.val()).length);
                 var data = snapshot.val();
                 var len = document.getElementById("data_length");
-                var _values = Object.values(data);
+                var data_values = Object.values(data);
 
                 data_length = Object.keys(data).length;
                 len.innerText = data_length;
 
-                for (var i = 0; i < data_length; i++) {
-                    korean[i] = _values[i].Korean;
-                    english[i] = _values[i].English;
-                    time_table[i] = _values[i].Time;
+
+                console.log(data_values);
+
+               for (var i = 0; i < data_length; i++) {
+                    Source[i] = data_values[i].Soruce;
+                    Original[i] = data_values[i].Text;
+                    Time[i] = data_values[i].Time;
                 }
 
-                korean = makeResult(korean.reduce(reducer, []));
-                english = makeResult(english.reduce(reducer, {}));
-                console.log(korean);
+                Original = makeResult(Original.reduce(reducer, []));
+                console.log(Original);
                 
-                resolve(korean);
+                resolve(Original);
             });
     });
 }
@@ -66,7 +70,6 @@ function array_diff(a, b) {
 
 writeUserData().then(
     res => {
-        console.log(res);
         var option = {
             list: res,
             weightFactor: 20
