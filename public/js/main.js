@@ -6,6 +6,10 @@ var Original = [];
 var Translation = [];
 var Time = [];
 
+// 원하는 문자 제외
+var delete_arr = [
+    "퇴사"
+];
 
 function writeUserData() {
     return new Promise(function (resolve, reject) {
@@ -23,17 +27,20 @@ function writeUserData() {
                 len.innerText = data_length;
 
 
-                console.log(data_values);
+                console.log('데이터 : ', data_values);
 
-               for (var i = 0; i < data_length; i++) {
-                    Source[i] = data_values[i].Soruce;
-                    Original[i] = data_values[i].Text;
-                    Time[i] = data_values[i].Time;
+                for (var i = 0; i < data_length; i++) {
+                    if (delete_arr.indexOf(data_values[i].Text) == -1) {
+                        Source[i] = data_values[i].Soruce;
+                        Original[i] = data_values[i].Text;
+                        Time[i] = data_values[i].Time;
+                    }
                 }
 
+                // 정렬
                 Original = makeResult(Original.reduce(reducer, []));
-                console.log(Original);
-                
+                console.log('정렬 후', Original);
+
                 resolve(Original);
             });
     });
@@ -58,21 +65,13 @@ function makeResult(obj) {
     return arr;
 }
 
-//비속어 제거용 준비
-function array_diff(a, b) {
-    var tmp={}, res=[];
-    for(var i=0;i<a.length;i++) tmp[a[i]]=1;
-    for(var i=0;i<b.length;i++) { if(tmp[b[i]]) delete tmp[b[i]]; }
-    for(var k in tmp) res.push(k);
-    return res;
-  }
-
 
 writeUserData().then(
     res => {
         var option = {
             list: res,
-            weightFactor: 20
+            weightFactor: 15,
+            shape: 'circle'
         }
         WordCloud(document.getElementById('my_canvas'), option);
     }
