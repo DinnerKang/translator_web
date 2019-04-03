@@ -6,6 +6,7 @@ var Original = [];
 var Translation = [];
 var Time = [];
 var week = new Array(7).fill(0);
+var Day = [];
 // 원하는 문자 제외
 var delete_arr = [
     "퇴사"
@@ -187,6 +188,44 @@ writeUserData().then(
         body.style.overflow = 'auto';
         main.style.visibility = 'visible';
         clearInterval(loading);
+    }
+).then(
+    res =>{
+        
+        for(var i =0, Time_len = Time.length; i < Time_len; i++){
+            Day[i] = Time[i].split(' ')[0];
+        }
+        Day = makeResult(Day.reduce(reducer, []));
+        for(var a=1, Day_len = Day.length; a<Day_len; a++ ){
+            Day[a][1] = Day[a][1] + Day[a-1][1];
+        }
+        console.log(Day);
+
+        // 성장 차트
+        var growth_chart = echarts.init(document.getElementById('growth_chart'));
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'time',
+                splitLine: {
+                    show: false
+                }
+            },
+            yAxis: {
+                name: '누적 데이터',
+                type: 'value'
+            },
+            series: [{
+                type: 'line',
+                data: Day
+            }],
+            color: [
+                '#A566FF'
+            ]
+        };
+        growth_chart.setOption(option);
     }
 );
 

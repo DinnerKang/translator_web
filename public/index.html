@@ -15,38 +15,41 @@
   <script defer src="https://cdn.jsdelivr.net/npm/echarts@4.1.0/dist/echarts.min.js"></script>
   <script defer src="./js/wordCloud.js"></script>
   <script defer src="./js/main.js"></script>
-  
+
 
   <link rel="stylesheet" href="./css/common.css">
 </head>
 
 <body>
-    <section id="loading_page">
-        <div class="load_counter">
-            <p>Loading</p>
-            <h1 id="load_percent">0%</h1>
-        </div>
-    </section>
+  <section id="loading_page">
+    <div class="load_counter">
+      <p>Loading</p>
+      <h1 id="load_percent">0%</h1>
+    </div>
+  </section>
   <section id="main">
-    <article>
-      <div>
-        <h1 class="main_text">
-          현재 쌓인 데이터의 수는 <span id="data_length"> </span>개 입니다.
-        </h1>
-      </div>
-    </article>
-    <article>
+    <article class="main_area">
+      <h1 class="main_text">
+        현재 쌓인 데이터의 수는 <span id="data_length"> </span>개 입니다.
+      </h1>
       <div id="my_canvas"></div>
     </article>
     <article class="week_area">
-      <span><h2>요일별 사용 횟수</h2></span>
-      <div id="week_chart">
-
-      </div>
-      <div id="week_chart_percent">
+      <span>
+        <h2>요일별 사용 횟수</h2>
+      </span>
+      <div id="week_chart"> </div>
+      <div id="week_chart_percent"> </div>
+    </article>
+    <article class="growth_area">
+      <span>
+        <h2>성장 그래프</h2>
+      </span>
+      <div id="growth_chart">
 
       </div>
     </article>
   </section>
 </body>
+
 </html>
