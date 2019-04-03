@@ -34,10 +34,10 @@ function writeUserData() {
                         Source[i] = data_values[i].Soruce;
                         Original[i] = data_values[i].Text;
                     }
-                    Time[i] = data_values[i].Time.substring(0, 4) + '-' 
-                        + data_values[i].Time.substring(4, 6) + '-' 
-                        + data_values[i].Time.substring(6, 8) + ' ' 
-                        + data_values[i].Time.substring(8, 10) + ':' + data_values[i].Time.substring(10, 12);
+                    Time[i] = data_values[i].Time.substring(0, 4) + '-' +
+                        data_values[i].Time.substring(4, 6) + '-' +
+                        data_values[i].Time.substring(6, 8) + ' ' +
+                        data_values[i].Time.substring(8, 10) + ':' + data_values[i].Time.substring(10, 12);
                 }
                 // 정렬
                 Original = makeResult(Original.reduce(reducer, []));
@@ -82,10 +82,56 @@ writeUserData().then(
     res => {
         console.log('시간 : ', Time);
         var temp;
-          for(var i=0, Time_len = Time.length;i<Time_len;i++){
+        for (var i = 0, Time_len = Time.length; i < Time_len; i++) {
             temp = new Date(Time[i]).getDay();
             week[temp]++;
-         }
-         console.log(week);
+        }
+        // week bar chart
+        var week_chart = echarts.init(document.getElementById('week_chart'));
+        var week_chart_percent = echarts.init(document.getElementById('week_chart_percent'));
+        var option = {
+            title: {
+                text: '요일별 번역 횟수'
+            },
+            xAxis: {
+                data: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+            },
+            yAxis: {},
+            series: [{
+                type: 'line',
+                data: [week[0], week[1], week[2], week[3], week[4], week[5], week[6]]
+            }],
+            color:[
+                '#5585ff'
+            ]
+        };
+        week_chart.setOption(option);
+        
+        option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{c} ({d}%)"
+            },
+            legend: {
+                orient: 'horizontal',
+                x: 'center',
+                data: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+            },
+            series: [{
+                type: 'pie',
+                data: [
+                    {value : week[0], name: 'Sunday'},
+                    {value : week[1], name: 'Monday'},
+                    {value : week[2], name: 'Tuesday'},
+                    {value : week[3], name: 'Wednesday'},
+                    {value : week[4], name: 'Thursday'},
+                    {value : week[5], name: 'Friday'},
+                    {value : week[6], name: 'Saturday'},
+                ],
+                
+            }]
+        };
+        week_chart_percent.setOption(option);
+       
     }
 );

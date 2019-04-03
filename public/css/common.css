@@ -13,3 +13,11 @@ ul, li{
 article{
     text-align: center;
 }
+.week_area{
+    text-align: center;
+}
+#week_chart, #week_chart_percent{
+    display: inline-block;
+    width: 800px;
+    height: 400px;
+}
