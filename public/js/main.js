@@ -185,23 +185,3 @@ writeUserData().then(
 );
 
 
-
-
-
-
-function loadScript() {
-    let percent = 0;
-    let loading = setInterval(function () {
-        percent = percent + 1;
-        let percentScript = percent + '%';
-        load_percent.innerHTML = percentScript;
-
-        if (percent == 93) {
-            console.log('Loading 완료');
-            loading_page.style.display = 'none';
-            body.style.overflow = 'auto';
-            main.style.visibility = 'visible';
-            clearInterval(loading);
-        }
-    }, 10);
-}
