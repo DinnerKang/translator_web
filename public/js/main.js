@@ -11,6 +11,27 @@ var delete_arr = [
     "퇴사"
 ];
 
+// 로딩 함수
+
+const load_percent = document.getElementById('load_percent');
+const loading_page = document.getElementById('loading_page');
+const main = document.getElementById('main');
+const body = document.getElementsByTagName('body')[0];
+
+let percent = 0;
+let loading = setInterval(function () {
+    percent = percent + 1;
+    let percentScript = percent + '%';
+    load_percent.innerHTML = percentScript;
+
+    if (percent == 99) {
+        setTimeout(function(){
+            load_percent.innerHTML = '오류가 있습니다. 다시 접속해주세요.';
+        },2000);
+        clearInterval(loading);
+    }
+}, 10);
+
 function writeUserData() {
     return new Promise(function (resolve, reject) {
         firebase
@@ -79,6 +100,7 @@ writeUserData().then(
         WordCloud(document.getElementById('my_canvas'), option);
     }
 ).then(
+    // Week Chart 만들기
     res => {
         console.log('시간 : ', Time);
         var temp;
@@ -90,9 +112,6 @@ writeUserData().then(
         var week_chart = echarts.init(document.getElementById('week_chart'));
         var week_chart_percent = echarts.init(document.getElementById('week_chart_percent'));
         var option = {
-            title: {
-                text: '요일별 번역 횟수'
-            },
             xAxis: {
                 data: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
             },
@@ -101,12 +120,12 @@ writeUserData().then(
                 type: 'line',
                 data: [week[0], week[1], week[2], week[3], week[4], week[5], week[6]]
             }],
-            color:[
+            color: [
                 '#5585ff'
             ]
         };
         week_chart.setOption(option);
-        
+
         option = {
             tooltip: {
                 trigger: 'item',
@@ -119,19 +138,70 @@ writeUserData().then(
             },
             series: [{
                 type: 'pie',
-                data: [
-                    {value : week[0], name: 'Sunday'},
-                    {value : week[1], name: 'Monday'},
-                    {value : week[2], name: 'Tuesday'},
-                    {value : week[3], name: 'Wednesday'},
-                    {value : week[4], name: 'Thursday'},
-                    {value : week[5], name: 'Friday'},
-                    {value : week[6], name: 'Saturday'},
+                data: [{
+                        value: week[0],
+                        name: 'Sunday'
+                    },
+                    {
+                        value: week[1],
+                        name: 'Monday'
+                    },
+                    {
+                        value: week[2],
+                        name: 'Tuesday'
+                    },
+                    {
+                        value: week[3],
+                        name: 'Wednesday'
+                    },
+                    {
+                        value: week[4],
+                        name: 'Thursday'
+                    },
+                    {
+                        value: week[5],
+                        name: 'Friday'
+                    },
+                    {
+                        value: week[6],
+                        name: 'Saturday'
+                    },
                 ],
-                
-            }]
+            }],
+            color: [
+                '#333333', '#5585ff', 'rgb(6, 234, 143)', 'rgb(210, 28, 15)', 'yellow', '#8319ce', 'gray'
+            ]
         };
         week_chart_percent.setOption(option);
-       
+    }
+).then(
+    res => {
+        console.log('Loading 완료');
+        loading_page.style.display = 'none';
+        body.style.overflow = 'auto';
+        main.style.visibility = 'visible';
+        clearInterval(loading);
     }
 );
+
+
+
+
+
+
+function loadScript() {
+    let percent = 0;
+    let loading = setInterval(function () {
+        percent = percent + 1;
+        let percentScript = percent + '%';
+        load_percent.innerHTML = percentScript;
+
+        if (percent == 93) {
+            console.log('Loading 완료');
+            loading_page.style.display = 'none';
+            body.style.overflow = 'auto';
+            main.style.visibility = 'visible';
+            clearInterval(loading);
+        }
+    }, 10);
+}
