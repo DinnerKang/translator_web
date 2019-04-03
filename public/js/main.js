@@ -10,7 +10,7 @@ var week = new Array(7).fill(0);
 var delete_arr = [
     "퇴사"
 ];
-
+console.log('현재 금지어 : ', delete_arr);
 // 로딩 함수
 
 const load_percent = document.getElementById('load_percent');
@@ -23,10 +23,9 @@ let loading = setInterval(function () {
     percent = percent + 1;
     let percentScript = percent + '%';
     load_percent.innerHTML = percentScript;
-
     if (percent == 99) {
         setTimeout(function(){
-            load_percent.innerHTML = '오류가 있습니다. 다시 접속해주세요.';
+            load_percent.innerHTML = '네트워크 속도가 느립니다...';
         },2000);
         clearInterval(loading);
     }
@@ -52,7 +51,7 @@ function writeUserData() {
 
                 for (var i = 0; i < data_length; i++) {
                     if (delete_arr.indexOf(data_values[i].Text) == -1) {
-                        Source[i] = data_values[i].Soruce;
+                        Source[i] = data_values[i].Source;
                         Original[i] = data_values[i].Text;
                     }
                     Time[i] = data_values[i].Time.substring(0, 4) + '-' +
@@ -62,6 +61,7 @@ function writeUserData() {
                 }
                 // 정렬
                 Original = makeResult(Original.reduce(reducer, []));
+                Source = makeResult(Source.reduce(reducer, []));
                 console.log('정렬 후', Original);
 
                 resolve(Original);
@@ -112,10 +112,16 @@ writeUserData().then(
         var week_chart = echarts.init(document.getElementById('week_chart'));
         var week_chart_percent = echarts.init(document.getElementById('week_chart_percent'));
         var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
             xAxis: {
                 data: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
             },
-            yAxis: {},
+            yAxis: {
+                name: '사용 횟수',
+                type: 'value'
+            },
             series: [{
                 type: 'line',
                 data: [week[0], week[1], week[2], week[3], week[4], week[5], week[6]]
