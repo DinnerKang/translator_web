@@ -70,7 +70,6 @@ function writeUserData() {
                         data_values[i].Time.substring(4, 6) + '-' +
                         data_values[i].Time.substring(6, 8) + ' ' +
                         data_values[i].Time.substring(8, 10) + ':' + data_values[i].Time.substring(10, 12);
-                    console.log(temp);
                     temp = false;
                 }
 
@@ -117,7 +116,6 @@ writeUserData().then(
 ).then(
     // Week Chart 만들기
     res => {
-        console.log('시간 : ', Time);
         var temp;
         for (var i = 0, Time_len = Time.length; i < Time_len; i++) {
             temp = new Date(Time[i]).getDay();
