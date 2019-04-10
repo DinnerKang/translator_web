@@ -9,7 +9,11 @@ var week = new Array(7).fill(0);
 var Day = [];
 // 원하는 문자 제외
 var delete_arr = [
-    "퇴사"
+    "퇴사",
+    "<",
+    ">",
+    "`",
+    "%"
 ];
 console.log('현재 금지어 : ', delete_arr);
 // 로딩 함수
@@ -25,9 +29,9 @@ let loading = setInterval(function () {
     let percentScript = percent + '%';
     load_percent.innerHTML = percentScript;
     if (percent == 99) {
-        setTimeout(function(){
+        setTimeout(function () {
             load_percent.innerHTML = '네트워크 속도가 느립니다...';
-        },2000);
+        }, 2000);
         clearInterval(loading);
     }
 }, 10);
@@ -52,9 +56,13 @@ function writeUserData() {
 
 
                 console.log('데이터 : ', data_values);
-
+                var temp = false;
                 for (var i = 0; i < data_length; i++) {
-                    if (delete_arr.indexOf(data_values[i].Text) == -1) {
+                    for (var j = 0, delete_arr_len = delete_arr.length; j < delete_arr_len; j++) {
+                        if (data_values[i].Text.includes(delete_arr[j])) temp = true;
+                    }
+                    //  if (delete_arr.indexOf(data_values[i].Text) == -1) {
+                    if (!temp) {
                         Source[i] = data_values[i].Source;
                         Original[i] = data_values[i].Text;
                     }
@@ -62,7 +70,10 @@ function writeUserData() {
                         data_values[i].Time.substring(4, 6) + '-' +
                         data_values[i].Time.substring(6, 8) + ' ' +
                         data_values[i].Time.substring(8, 10) + ':' + data_values[i].Time.substring(10, 12);
+                    console.log(temp);
+                    temp = false;
                 }
+
                 // 정렬
                 Original = makeResult(Original.reduce(reducer, []));
                 Source = makeResult(Source.reduce(reducer, []));
@@ -193,14 +204,14 @@ writeUserData().then(
         clearInterval(loading);
     }
 ).then(
-    res =>{
-        
-        for(var i =0, Time_len = Time.length; i < Time_len; i++){
+    res => {
+
+        for (var i = 0, Time_len = Time.length; i < Time_len; i++) {
             Day[i] = Time[i].split(' ')[0];
         }
         Day = makeResult(Day.reduce(reducer, []));
-        for(var a=1, Day_len = Day.length; a<Day_len; a++ ){
-            Day[a][1] = Day[a][1] + Day[a-1][1];
+        for (var a = 1, Day_len = Day.length; a < Day_len; a++) {
+            Day[a][1] = Day[a][1] + Day[a - 1][1];
         }
         console.log(Day);
 
@@ -231,5 +242,3 @@ writeUserData().then(
         growth_chart.setOption(option);
     }
 );
-
-
