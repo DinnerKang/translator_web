@@ -13,7 +13,11 @@ var delete_arr = [
     "<",
     ">",
     "`",
-    "%"
+    "%",
+    "'",
+    '"',
+    '/',
+    '(', ')'
 ];
 console.log('현재 금지어 : ', delete_arr);
 // 로딩 함수
@@ -45,7 +49,6 @@ function writeUserData() {
             .database()
             .ref("translate/success")
             .on("value", function (snapshot) {
-                console.log(snapshot.val());
                 console.log('개수 : ', Object.keys(snapshot.val()).length);
                 var data = snapshot.val();
                 var len = document.getElementById("data_length");
@@ -61,8 +64,9 @@ function writeUserData() {
                     for (var j = 0, delete_arr_len = delete_arr.length; j < delete_arr_len; j++) {
                         if (data_values[i].Text.includes(delete_arr[j])) temp = true;
                     }
-                    //  if (delete_arr.indexOf(data_values[i].Text) == -1) {
-                    if (!temp) {
+
+                    // temp == false , 길이가 8 이하
+                    if (!temp && data_values[i].Text.length < 8) {
                         Source[i] = data_values[i].Source;
                         Original[i] = data_values[i].Text;
                     }
